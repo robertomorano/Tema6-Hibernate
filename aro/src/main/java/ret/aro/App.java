@@ -13,6 +13,8 @@ import ret.aro.entities.User;
 public class App {
 	static Scanner sc = new Scanner(System.in);
 	static UserCRUD userCrud = new UserCRUD();
+	static LikesCRUD userCrud = new LikesCRUD();
+	static PostsRUD userCrud = new PostsCRUD();
 
 	public static void main(String[] args) {
 
@@ -137,6 +139,8 @@ public class App {
 		int idUser = -1;
 		int idPost = -1;
 
+		//Al ser una relacion quiero mostrar todos los elementos de la tabla con la que se relaciona, en este caso usuarios,
+		//y que el usuario elija el nombre a partir de ese input sacar el id   
 		System.out.println("dame el username del usuario que da el like (para la relacion idUsuarios)");
 		usernameRelacion = sc.next();
 
@@ -164,6 +168,18 @@ public class App {
 		return like;
 	}
 
+	private static int elegirTabla(){
+		int table = 0;
+		
+		System.out.println("Dame la tabla\n"
+				+ "1. Users\n"
+				+ "2. Likes\n"
+				+ "3. Posts");
+		table = sc.nextInt();
+		return table;
+	}
+
+
 	private static void listar() {
 		int op = 0;
 		int table = 0;
@@ -172,11 +188,7 @@ public class App {
 		op = sc.nextInt();
 
 		sc.nextLine();
-		System.out.println("Dame la tabla\n"
-				+ "1. Users\n"
-				+ "2. Likes\n"
-				+ "3. Posts");
-		table = sc.nextInt();
+		table = elegirTabla();
 		
 		if (op == 2) {
 			if (table == 1) {
