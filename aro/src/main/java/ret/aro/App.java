@@ -17,7 +17,7 @@ public class App {
 	public static void main(String[] args) {
 
 		System.out.println("Conectar base de datos");
-		userCrud.getConexion();
+		
 
 		int opcion;
 		do {
@@ -27,7 +27,7 @@ public class App {
 
 			switch (opcion) {
 			case 1: // Crear
-				crear();
+				
 				break;
 			case 2: // Insertar
 				insertar();
@@ -67,22 +67,7 @@ public class App {
 		System.out.print("Seleccione una opción: ");
 	}
 
-	public static void crear() {
-		System.out.println("\n--- CREAR TABLAS ---");
-		System.out.println("1. Crear TODAS las tablas (Usuarios, Posts, Likes)");
-		System.out.println("2. Crear una tabla concreta");
-		System.out.print("Opción: ");
-		int op = sc.nextInt();
-		sc.nextLine();
-
-		if (op == 1) {
-			userCrud.createTables();
-		} else if (op == 2) {
-			System.out.print("Nombre de la tabla a crear (Usuarios, Posts, Likes): ");
-			String table = sc.nextLine();
-			userCrud.createTable(table); 
-		}
-	}
+	
 
 	public static void insertar() {
 		System.out.println("\n--- INSERTAR DATOS ---");
@@ -135,7 +120,7 @@ public class App {
 		System.out.println("dame el username del usuario que publica (para la relacion idUsuarios)");
 		usernameRelacion = sc.next();
 
-		userCrud.getUser("Username", usernameRelacion);
+		userCrud.getUsuarioById(idUser);
 
 		System.out.println("Que id de los disponibles seleccionas");
 		idUser = sc.nextInt();
@@ -155,14 +140,14 @@ public class App {
 		System.out.println("dame el username del usuario que da el like (para la relacion idUsuarios)");
 		usernameRelacion = sc.next();
 
-		userCrud.getUser("Username", usernameRelacion);
+		userCrud.getUsuarioById(idUser);
 
 		
 
 		System.out.println("\ndame el ID del Post al que se da like (para la relacion idPosts)");
 		postIdRelacion = sc.next();
 
-		User user = userCrud.getUser("Username", usernameRelacion);
+		User user = userCrud.getUsuarioById(idUser);
 		
 		
 		
@@ -196,7 +181,7 @@ public class App {
 		if (op == 2) {
 			if (table == 1) {
 				System.out.println("Dame el campo a cambiar y su nuevo valor");
-				userCrud.getUser(sc.next(), sc.next());
+				
 				
 			} else if (table == 2) {
 				System.out.println("Dame el campo a cambiar y su nuevo valor");
@@ -207,7 +192,7 @@ public class App {
 			}
 		} else {
 			if (table == 1) {
-				for(User user: userCrud.listUsers()) {
+				for(User user: userCrud.getAllUsuarios()) {
 					System.out.println(user);
 				}
 			} else if (table == 2) {
