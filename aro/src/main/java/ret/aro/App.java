@@ -3,6 +3,8 @@ package ret.aro;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
+import ret.aro.crud.LikeCRUD;
+import ret.aro.crud.PostsCRUD;
 import ret.aro.crud.UserCRUD;
 import ret.aro.entities.Like;
 import ret.aro.entities.Post;
@@ -13,8 +15,8 @@ import ret.aro.entities.User;
 public class App {
 	static Scanner sc = new Scanner(System.in);
 	static UserCRUD userCrud = new UserCRUD();
-	static LikesCRUD userCrud = new LikesCRUD();
-	static PostsRUD userCrud = new PostsCRUD();
+	static PostsCRUD postCrud = new PostsCRUD();
+	static LikeCRUD likeCrud = new LikeCRUD();
 
 	public static void main(String[] args) {
 
@@ -84,10 +86,11 @@ public class App {
 			userCrud.saveUsuario(createUser());
 			break;
 		case 2:
-			userCrud.insertInto(createLike());
+			likeCrud.saveLike(createLike());
 			break;
 		case 3:
-			userCrud.insertInto(createPost());
+			postCrud.savePosts(createPost());
+			;
 			break;
 		}
 	}
@@ -139,8 +142,6 @@ public class App {
 		int idUser = -1;
 		int idPost = -1;
 
-		//Al ser una relacion quiero mostrar todos los elementos de la tabla con la que se relaciona, en este caso usuarios,
-		//y que el usuario elija el nombre a partir de ese input sacar el id   
 		System.out.println("dame el username del usuario que da el like (para la relacion idUsuarios)");
 		usernameRelacion = sc.next();
 
@@ -168,18 +169,6 @@ public class App {
 		return like;
 	}
 
-	private static int elegirTabla(){
-		int table = 0;
-		
-		System.out.println("Dame la tabla\n"
-				+ "1. Users\n"
-				+ "2. Likes\n"
-				+ "3. Posts");
-		table = sc.nextInt();
-		return table;
-	}
-
-
 	private static void listar() {
 		int op = 0;
 		int table = 0;
@@ -188,19 +177,22 @@ public class App {
 		op = sc.nextInt();
 
 		sc.nextLine();
-		table = elegirTabla();
+		System.out.println("Dame la tabla\n"
+				+ "1. Users\n"
+				+ "2. Likes\n"
+				+ "3. Posts");
+		table = sc.nextInt();
 		
 		if (op == 2) {
+			//Falta implementar funciones en el crud
 			if (table == 1) {
-				System.out.println("Dame el campo a cambiar y su nuevo valor");
+				
 				
 				
 			} else if (table == 2) {
-				System.out.println("Dame el campo a cambiar y su nuevo valor");
-				System.out.println(); userCrud.getLike(sc.next(), sc.next());
+				
 			} else {
-				System.out.println("Dame el campo a cambiar y su nuevo valor");
-				System.out.println( userCrud.getPost(sc.next(), sc.next()));
+				
 			}
 		} else {
 			if (table == 1) {
@@ -208,11 +200,11 @@ public class App {
 					System.out.println(user);
 				}
 			} else if (table == 2) {
-				for(Like user: userCrud.listLikes()) {
+				for(Like user: likeCrud.getAllLikes()) {
 					System.out.println(user);
 				}
 			} else {
-				for(Post user: userCrud.listPosts()) {
+				for(Post user: postCrud.getAllPostss()) {
 					System.out.println(user);
 				}
 			}
@@ -230,15 +222,15 @@ public class App {
 
 		System.out.println("Introduzca el ID del registro que desea modificar:");
 		if (table.equals("Usuarios")) {
-			for(User user: userCrud.listUsers()) {
+			for(User user: userCrud.getAllUsuarios()) {
 				System.out.println(user);
 			}
 		} else if (table.equals("Posts")) {
-			for(Post user: userCrud.listPosts()) {
+			for(Post user: postCrud.getAllPostss()) {
 				System.out.println(user);
 			}
 		} else {
-			for(Like user: userCrud.listLikes()) {
+			for(Like user: likeCrud.getAllLikes()) {
 				System.out.println(user);
 			}
 		}
@@ -253,9 +245,10 @@ public class App {
 
 		String nuevoValor = sc.nextLine();
 
-		boolean resultado = userCrud.updateFromTable(table, campo, idRegistro, nuevoValor);
+		userCrud.updateUsuario(null);
+		int resultado =0 ;
 		
-		if(resultado) {
+		if(resultado<=0) {
 			System.out.println("Exito al modificar");
 		}else {
 			System.out.println("Error al modificar");
@@ -267,28 +260,14 @@ public class App {
 		String value = "";
 		String field = "";
 		String table = "";
+		int id = 0;
 		System.out.println("Dame la tabla y el valor del campo a eliminar y el valor a eliminar");
 		table = sc.next();
 		field = sc.next();
 		value = sc.next();
-		userCrud.deleteFromTable(table, field, value);
+		userCrud.deleteUsuario(id);
 	}
 
-	public static void eliminarTablas() {
-		System.out.println("");
-		System.out.println("1. Eliminar TODAS las tablas (Likes, Posts, Usuarios)");
-		System.out.println("2. Eliminar una tabla concreta");
-		System.out.print("Opción: ");
-		int op = sc.nextInt();
-		sc.nextLine();
-
-		if (op == 1) {
-			userCrud.deleteTables();
-		} else if (op == 2) {
-			System.out.print("Nombre de la tabla a eliminar (Usuarios, Posts, Likes): ");
-			String table = sc.nextLine();
-			userCrud.deleteTable(table);
-		}
-	}
+	
 
 }
